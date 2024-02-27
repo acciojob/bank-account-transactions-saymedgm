@@ -4,7 +4,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class BankAccount {
-	private double balance;
+    private double balance;
     private Lock lock;
 
     public BankAccount(double initialBalance) {
@@ -13,15 +13,30 @@ public class BankAccount {
     }
 
     public void deposit(double amount) {
-       // your code goes here
+        lock.lock();
+        try {
+            balance += amount;
+            System.out.println("Deposited: " + amount + ", Current Balance: " + balance);
+        } finally {
+            lock.unlock();
+        }
     }
 
     public void withdraw(double amount) {
-        // your code goes here
+        lock.lock();
+        try {
+            if (balance >= amount) {
+                balance -= amount;
+                System.out.println("Withdrawn: " + amount + ", Current Balance: " + balance);
+            } else {
+                System.out.println("Insufficient Balance. Current Balance: " + balance);
+            }
+        } finally {
+            lock.unlock();
+        }
     }
 
     public double getBalance() {
-    	// your code goes here
         return balance;
     }
 
